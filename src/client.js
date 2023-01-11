@@ -8,7 +8,7 @@ function error(msg) {
 	process.exit(1);
 }
 
-const safewords = ["exit", "close", "end"];
+const stopConnWords = ["exit", "close", "end"];
 
 function main() {
 	if (process.argv.length !== 4) {
@@ -63,7 +63,7 @@ function connect(host, port) {
 
 		rl.on("line", (line) => {
 			socket.write(line);
-			if (safewords.includes(line.toLocaleLowerCase())) {
+			if (stopConnWords.includes(line.toLocaleLowerCase())) {
 				socket.end(() => {
 					console.log("\x1b[31mYou have disconnected from the server.\x1b[0m");
 				});

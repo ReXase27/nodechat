@@ -1,7 +1,7 @@
 import { Server } from "net";
 import { fileURLToPath } from "url";
 
-const endConnectionOptions = ["exit", "close", "end"];
+const stopConnWords = ["exit", "close", "end"];
 const host = "127.0.0.1";
 
 const connections = new Map();
@@ -26,8 +26,10 @@ function listen(port) {
 		const remoteSocket = `${socket.remoteAddress}:${socket.remotePort}`;
 		console.log(`\x1b[32mNew connection from ${remoteSocket}.\x1b[0m`);
 		socket.setEncoding("utf-8");
+
 		let username;
 		let fullMessage;
+
 		socket.on("data", (msg) => {
 			if (!connections.has(socket)) {
 				for (const v of connections.values()) {
@@ -40,9 +42,7 @@ function listen(port) {
 				connections.set(socket, msg);
 				username = connections.get(socket);
 				return;
-			} else if (
-				endConnectionOptions.includes(msg.toString().toLocaleLowerCase())
-			) {
+			} else if (stopConnWords.includes(msg.toString().toLocaleLowerCase())) {
 				socket.end(() => {
 					console.log(`\x1b[31m${username} has disconnected.\x1b[0m`);
 				});
@@ -53,6 +53,7 @@ function listen(port) {
 			}
 			console.log(`${remoteSocket} -> ${fullMessage}`);
 		});
+
 		socket.on("error", (err) => error(err.message));
 	});
 
