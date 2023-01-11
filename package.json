@@ -1,0 +1,15 @@
+{
+  "name": "chatroom",
+  "version": "1.0.0",
+  "description": "a chatroom in javascript",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "ReXase27",
+  "license": "ISC",
+  "devDependencies": {
+    "rome": "^11.0.0"
+  }
+}
